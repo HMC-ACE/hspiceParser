@@ -42,7 +42,7 @@ def read_binary_signal_file(file_path):
     """
     with open(file_path, 'rb') as file:
         decode_info = file.read(16)  # this is the block header, first 4 bytes is an endian indicator, next 4 is a blank, then another endian indicator, then last 4 are the block size
-        block_size = decode_info[-4:]  # the rest of the block we might care about I dont know yet
+        block_size = decode_info[-4:]
         block_size_int = struct.unpack('<i', block_size)[0]  # the struct will return a tuple no matter what, since we know there is one element in the tuple we can extract it on the spot
         file_header_block = file.read(block_size_int).decode('UTF-8')
         version = file_header_block[20:24]
@@ -89,9 +89,6 @@ def parse_var_name(name):
         return new_name_parts[0]
 
 def parse_header(header_str):
-    # header_str = header.decode('UTF-8')
-    # var_count = header_str[:4]
-    # var_count = int(var_count)
     header_lst = header_str.split(' ')
     header_lst = list(filter(lambda x: x != '', header_lst))
     header_lst = header_lst[:2] + header_lst[15:]  # this chops out the copy right stuff
@@ -129,6 +126,7 @@ def parse_header(header_str):
     # 10	real part of current (not verified)
     # 11	imaginary part of current (not verified)
     # 15	current
+    # 16 the units stuff is not used but perhaps it would be useful to other people.
     var_idx = get_var_name_idx(var_info)
     var_nums, var_names = var_info[:var_idx], var_info[var_idx:]  # these two variables should have identical length
     var_names = [parse_var_name(name) for name in var_names]
@@ -195,7 +193,7 @@ def general_make_dict(var_lst, data_lst, header_str, MULTI_SWEEP_FLAG):
         sweep_val_lst = []
 
     else:
-        sweep_val_lst = []  # won't have anything added to it in this case tho
+        sweep_val_lst = []  # won't have anything added to it in this case though
     var_count = len(var_lst)
 
     for i, sweep in enumerate(data_lst):
@@ -227,7 +225,6 @@ def general_make_dict(var_lst, data_lst, header_str, MULTI_SWEEP_FLAG):
     return var_dict, MULTI_SWEEP_FLAG, None, None
 
 def ac_make_dict(var_lst, data_lst, header_str, MULTI_SWEEP_FLAG):
-    # note: idk about sweeps | if last var is sweep var then save it, change the while loop, and exclude it from the Re Im stuff
     var_lst = [['HERTZ']] + [[f'{parse_var_name(var)}_Mag', f'{parse_var_name(var)}_Phase'] for var in var_lst if var != 'HERTZ']  # increase the # of vars and prep for Re and Im parts to each
     var_lst = sum(var_lst, [])  # flatten
     var_dict = {var: [[] for i in range(len(data_lst))] for var in var_lst}
@@ -243,7 +240,7 @@ def ac_make_dict(var_lst, data_lst, header_str, MULTI_SWEEP_FLAG):
                 var_dict[var_lst[(i % var_count) + 1]][sweep_idx].append(lst[i + 1])
                 i += 2
 
-    return var_dict, MULTI_SWEEP_FLAG, None, None  # the Nones are just for the time being
+    return var_dict, MULTI_SWEEP_FLAG, None, None  # the Nones make this function play nice with the way I used it later.
 
 def write_to_dict(data_lst, header_str, ext):
     # this function puts it all together so that we get a dictionary with variable names for keys and lists of the respective values. If there are multiple sweeps then there will be multiple lists, the lists are always 2D
@@ -298,8 +295,7 @@ def import_export_binary(path, ext, from_ext):
     try:
         header, data = read_binary_signal_file(path)
         main_dict, sweep_flag, sweep_var_name, sweep_values = write_to_dict(data, header, from_ext)
-        # outfile_name = get_outfile_name(path, ext)
-        ## use sweep_flag to tell if it should be a folder of csvs or single file
+        # use sweep_flag to tell if it should be a folder of csvs or single file
         if sweep_flag and ext == 'csv':
             content = ''
             fpath = path + '_' + sweep_var_name + '('
@@ -327,17 +323,14 @@ def import_export_binary(path, ext, from_ext):
             file_path = join(str(dir_path), outfile_name)
             content = ext_dict[ext](main_dict)
             write_to_file(file_path, content, ext)
-        return main_dict, content  # TODO delete this line (it is for testing)
+        return main_dict, content
 
     except KeyError:
         raise ValueError('the extension must NOT have the "." in it ex: "csv" | the only extension options are m, csv, and pickle')
     except FileNotFoundError as err:
         print(err)
 
-def import_export_ascii(path, ext):  # TODO: make sure that this function knows how to handle sweeps
-    # this needs to detect multiple sweeps and handle them accordingly, this also needs to have a way to get the sweep var which my require the debugger to figure out.
-    # this should have the same general behavior as the other version of this
-    # also note that there may be some repeat code in the handling of the sweeps, perhaps make that into a function?
+def import_export_ascii(path, ext):
     dict_to_pickle_dict = lambda dict_data: dict_data
 
     ext_dict = {'m': dict_to_matlab_str,
@@ -380,7 +373,7 @@ def import_export_ascii(path, ext):  # TODO: make sure that this function knows 
             dir_path, _ = split(path)
             file_path = join(str(dir_path), outfile_name)
             write_to_file(file_path, content_obj, ext)
-        return main_dict, content_obj  # TODO delete this line (it is for testing)
+        return main_dict, content_obj
     except KeyError:
         raise ValueError('the only extension options are "m," "csv," or "pickle"')
     except FileNotFoundError as err:
@@ -408,11 +401,11 @@ def usage():
                 """
     print(usage_str)
 
-def get_from_ext(path):  # this function is for auto detecting the input file type
+def get_from_ext(path):  # this function is for auto detecting the input file extention
     file_name = basename(path)
     name_components = file_name.split('.')
     entire_ext = name_components[-1]
-    return entire_ext[:2]  # returns the first to chars of the extension i.e. "ac" "sw" "tr" and ignores the numbers after
+    return entire_ext[:2]  # returns the first two chars of the extension i.e. "ac" "sw" "tr" and ignores the numbers after
 
 def reformat(sweep_lst):
     """
@@ -600,8 +593,6 @@ def import_export(path, ext):
     else:
         import_export_ascii(path, ext)
 
-# data_dict, file_content = import_export(TEST_PATH, 'csv', 'ac')
-# data_dict = signal_file_ascii_read(TEST_PATH)
 if __name__ == '__main__':
     import sys
     try:
