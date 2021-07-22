@@ -1,0 +1,6 @@
+$DATA1 SOURCE='HSPICE' VERSION='L-2016.06 linux64' PARAM_COUNT=0
+.TITLE '* dc sweep of a relay to show that it works'
+ rchg             tmech            trl              tmechbb         
+ trlbb            temper           alter#          
+  1.623e-08        1.559e-08        5.675e-10        1.434e-08      
+  1.067e-09         25.0000        1               
