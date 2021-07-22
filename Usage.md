@@ -16,7 +16,7 @@ If there are multiple sweeps in the input file and the CSV option is selected, t
 
 The parser is a single python file that is run from the terminal. To use it you must have Python 3.5+ which does require installation from [here](https://www.python.org/downloads/). Download the file here [raw link] or navigate to the appropriate directory on your computer and do the following:
 
-`wget [file’s raw link]`
+`wget https://github.com/HMC-ACE/hspiceParser/blob/main/hspiceParser.py`
 
 This download enables most of hSpiceParser’s functionality, but some output formats require additional Python libraries.  The Parser file only relies on built-in Python 3.4+ functions to produce .m, .csv and Pickle files. The parser can also produce Matlab .mat files, but it requires that you have Scipy and Numpy installed on your machine to do so.
 
