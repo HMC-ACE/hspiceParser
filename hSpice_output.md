@@ -1,4 +1,4 @@
-#hSpice Output Binaries and ASCII
+# hSpice Output Binaries and ASCII
 
 ## Introduction
 
