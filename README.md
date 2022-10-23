@@ -4,7 +4,7 @@ Welcome to the hspiceParser Github page. hpsiceParser aims to be the final word 
 
 In the spirity of 'very simple installation', you can download hspiceParser from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/hspiceParser.py), or run the following terminal command:
 
-`wget https://raw.github.com/HMC-ACE/hspiceParser/blob/main/hspiceParser.py`GETTHIS RIGHT
+`wget https://raw.githubusercontent.com/HMC-ACE/hspiceParser/main/hspiceParser.py`
 
 For assistance in using the parser, go to [Usage](Usage.md).
 
