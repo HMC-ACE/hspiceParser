@@ -17,31 +17,43 @@ Setting the `.option post=1` hSpice directive in the input file causes hSpice to
 
 ## Binary Format
 
-Both binary formats share the same overall structure: a header followed by a series of ordered information sets that we will call blocks. The header is a special type of block, so the structure of blocks will be discussed first.
+Both binary formats share the same overall structure: they are built up from of ordered sets of bytes called blocks, and every file contains a header block followed by a series of data blocks. The header is a special type of block, so the structure of blocks in general is discussed first.  After that, we discuss data blocks and the file as a whole.
 
-Each block consists of a 16-byte block head, some number of data bytes, and a four-byte block tail. The first 12 bytes in the block head specify the Endianness of the following data, and the last 4 bytes in the block head represent an integer describing the number of bytes in the rest of the block. The remaining bytes in the block are called the data section, and it contains the data stored in the block from the hSpice simulation. Finally, the last 4 bytes in the block are the block tail, and they are an integer representation of how many bytes were in that block. The entire binary file is a sequence of these blocks, though not all blocks are the same size.
-![Image describing block structure](Block.png)
-<sub>Figure 1, block structure<sub>
+![Image depicting binary file structure](figures/file.png)
+<sub>Figure 1, overall binary file structure<sub>
+
+
+# A Generic Block
+
+Each block consists of three sections, a 16-byte block head, a data section that contains some number of data bytes, and a four-byte block tail. The first 12 bytes in the block head specify the Endianness of the following data, and the last 4 bytes in the block head are an integer describing the number of bytes in the data section. This is followed by the data section, which is the specified number of bytes long. Finally, the last 4 bytes in the block are the block tail, and they are an integer representation of how many bytes are in the preceding block. The entire binary file is a sequence of these blocks, though not all blocks are the same size.
+![Image describing block structure](figures/Block.png)
+<sub>Figure 2, block structure<sub>
+
+# The Header Block
+
+The header block is the very first block in the binary file, and while it contains a standard block head and block tail, it is unique because it contains UTF-8 plain text in the data section instead of binary data. 
+
+The string in the header block data section is made of several substrings. The first substring in the header block string is a number.  The number  is 20 or 24 digits long, and the length depends on the format:  9601 produces a 20 digit number and 2001 produces a 24 digit number. The first four digits of this number denote the number of variables being monitored, the next 12 or 16 digits are not used by our parser, and the last 4 digits communicate the binary format (9601 or 2001). The 25th character in both 
+formats is an asterisk. The next substring in the header block is a series of human-readable fields: the name of the file that was simulated to generate the binary, information about the date and time of the simulation, and a copyright notice. The next part of the header is another number that represents the number of  sweeps that are in the file. Next will be a series of numbers that our parser does not use; there will be the same number of them as there are variables being tracked. Finally, the header ends with a list of variable/ parameter names followed by an end marker of “$&%#”. The end marker is followed by white space and the block tail: 4 bytes describing the header size in number of bytes as described above in the block description. There are no newline characters in the header block (or, for that matter, anywhere in the binary file).
+
+# The Data Blocks
 
 The bytes in the data section must be interpreted differently for different formats.  All the blocks after the header contain the signal data from the simulation. The different formats are a memory saving tool, so the values in the 9601 format are represented as 4 byte floats while the values in the 2001 format are represented by 8 byte doubles. A single sweep can and likely will span multiple blocks, so to determine the end of a sweep there will be a terminating value. For the 9601 format this value is 1.0000000150474662e+30, and for the 2001 format the value is 1e+30. This termination value is still present when there are no sweeps set.
 
-The data section consists of numerical values stored as binary values that are either 4 or 8 bytes long. The values are not consecutive values of one signal, instead the values for each recorded signal are interleaved in a specific order. The order is specified by a string in the header block, which is described below. An example is  shown in Figure 2, where the first value represents variable 1, then the next value represents variable 2, and so on. After all the simulation variables have been exhausted the pattern repeats. This pattern continues until the end of the sweep or the end of the simulation. If multiple sweeps are recorded in the file, then an additional value is inserted at the start of each sweep to indicate the working value of the swept variable in the current sweep. The signals that result from the sweep are recorded after this first value, and they are recorded in the same interleaved pattern.
-
->Var 1 value, Var 2 value, Var 3 value, Var 4 value, Var 5 value, Var 1 value, Var 2 value, Var 3 value, Var 4 value, Var 5 value, Var 1 value...
-
-<sub>Figure 2, interleaving pattern<sub>
-
-The header block is the very first in the binary file, and while it contains a standard block head and block tail, it is unique because it contains UTF-8 plain text in the data section instead of binary data. The data section of the header block contains a 20 or 24 digit number, text describing the source file, copyright information, and the variable names for the signals recorded from the simulation.
-
-The string in the header block data section consists of several parts. The first part of the header block string is a number that is 20 or 24 digits long (the length depends on if the format:  9601 produces a 20 digit number and 2001 produces a 24 digit number). The first four digits of this number denote the number of variables being monitored, the next 12 or 16 digits are not used by our parser, and the last 4 digits communicate the binary format (9601 or 2001). The 25th character in both 
-formats is an asterisk. The next part of the header block is a series of human-readable strings: first, the name of the file that was simulated to generate the binary; second, information about the date and time of the simulation; and third, a copyright notice. The next part of the header is another number that represents the number of  sweeps that are in the file. Next will be a series of numbers that our parser does not use; there will be the same number of them as there are variables being tracked. Finally, the header ends with a list of variable/ parameter names followed by an end marker of “$&%#”. The end marker is followed by white space and the block tail: 4 bytes describing the header size in number of bytes as described above in the block description. There are no newline characters in the header block (or, for that matter, anywhere in the binary file).
+The data section consists of numerical values stored as binary values that are either 4 or 8 bytes long. The values are not consecutive values of one signal, instead the values for each recorded signal are interleaved in a specific order. The order is specified by a string in the header block, an example of which is depicted in Figure 2. An example of interleaved data is also shown in Figure 2. In the interleaved data, one record is recorded for each variable, and after all the simulation variables have been exhausted the pattern repeats. This pattern continues until the end of the sweep or the end of the simulation. If multiple sweeps are recorded in the file, then an additional value is inserted at the start of each sweep to indicate the working value of the swept variable in the current sweep. The signals that result from the sweep are recorded after this first value, and they are recorded in the same interleaved pattern.
 
 ```
-  00050000000100009601    * exampleFile.sp                                                  06/08/2020      14:04:30 Copyright (c) 1986 - 2020 by Synopsys, Inc. All Rights Reserved.         10                                                                              1       1       1       1       8     TIME            v(0             v(vo            v(vs            i(vs            r1              $&%#   
+  00050000000100009601    * exampleFile.sp                                                  
+  06/08/2020      14:04:30 Copyright (c) 1986 - 2020 by Synopsys, Inc. All Rights Reserved.         
+  10                                                                              
+  1       1       1       1       8     
+  TIME            v(0             v(vo            v(vs            i(vs            r1              
+  $&%#   
 ```
 
-![Image depicting binary file structure](file.png)
-<sub>Figure 3, overall binary file structure<sub>
+>TIME_value, v_0_value, v_vo_value, v_vs_value, i_vs_value, TIME_value, v_0_value, v_vo_value, v_vs_value, i_vs_value, TIME_value...
+
+<sub>Figure 3, header variable declaration and interleaving data pattern.  Line breaks inserted for readability, and are not present in the source file.<sub>
 
 ***
 ## ASCII Format
@@ -52,7 +64,7 @@ The header section is identical to the header for the binary file described abov
 
 The body section consists of a series of simulated values. The values are ASCII representations of numbers in scientific notation (unless otherwise specified by the `.ingold` hSpice directive). The ASCII strings in the body section are different lengths for different formats. The values in the 9601 format are represented with a string of 11 characters in the form of 1.23456E±78. The values in the 2001 format are represented by a 13 character string in the form of 1.2345678E±90. There are no separators between the ASCII values.
 
-The interleaving of the values stored in the ASCII format is the same as that of the binary format. Also like the binary format, sweeps start with a value of the swept variable.  Each sweep has a terminating value equal to 1E30, but the value of the terminator depends on the format. The terminator value in the 9601 format is 0.10000E+31 followed by a newline.  The terminator value in the 2001 format is 0.1000000E+31, also followed by a newline character. This termination value is still present when there are no sweeps.
+The interleaving of the values stored in the ASCII format is the same as that of the binary format. Also like the binary format, sweeps start with a value of the swept variable.  Each sweep has a terminating value equal to 1E30, but the string representation of the terminator depends on the format. The terminator value in the 9601 format is 0.10000E+31 followed by a newline.  The terminator value in the 2001 format is 0.1000000E+31, also followed by a newline character. This termination value is still present when there are no sweeps.
 
-![image describing the ASCII file structure](ASCII_File.png)
+![image describing the ASCII file structure](figures/ASCII_File.png)
 <sub>Figure 4, overall ASCII file structure<sub>
