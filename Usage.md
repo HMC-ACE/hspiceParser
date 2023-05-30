@@ -1,9 +1,9 @@
-#Usage
+# Usage
 
 `hSpiceParser <filename> <output format>`
 * Converts an hSpice output file in 9601, 2001 or ASCII format specified by <filename> to an output format specified by <output format>.
 
-#Overview
+# Overview
 
 The hspiceParser is made to convert hSpice DC, AC and transient simulation output files (*.swX, *.acX, *.trX) to file types that are readable by common mathematical software. It is capable of reading the 9601 and 2001 binary formats, the ASCII file format, and the measure file format. The parser can generate CSV files, matlab files containing ASCII strings in arrays, which are given the suffix “.m”, and Python Pickle files. Downloading Scipy and Numpy allows it to produce Matlab binary files in 
 the .mat format.
@@ -12,7 +12,7 @@ hSpice simulations report arrays of values of electrical variables that correspo
 
 If there are multiple sweeps in the input file and the CSV option is selected, the parser will create a folder of CSV files named according to the value of the swept variable. The use of both the “.m” and pickle option will result in a single file that contains all of the sweeps. The pickle option saves a python dictionary with the variable names from the hSpice file as the keys, and the corresponding values for each variable stored in a two dimensional list with the first dimension corresponding to the sweep index and the second corresponding to the values of the variable throughout the simulation. The “.m” and “.mat” is organized in the same way as the pickle output but in the appropriate object
 
-#Installation
+# Installation
 
 The parser is a single python file that is run from the terminal. To use it you must have Python 3.5+ which does require installation from [here](https://www.python.org/downloads/). Download the file here [raw link] or navigate to the appropriate directory on your computer and do the following:
 
@@ -20,7 +20,7 @@ The parser is a single python file that is run from the terminal. To use it you 
 
 This download enables most of hSpiceParser’s functionality, but some output formats require additional Python libraries.  The Parser file only relies on built-in Python 3.4+ functions to produce .m, .csv and Pickle files. The parser can also produce Matlab .mat files, but it requires that you have Scipy and Numpy installed on your machine to do so.
 
-#Usage Examples
+# Usage Examples
 
 To use the parser do:
 
