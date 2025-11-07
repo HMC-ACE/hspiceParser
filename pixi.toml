@@ -11,7 +11,7 @@ libc = {family = "glibc", version = "2.22"}
 linux = "4.12.14"
 
 [tasks]
-release = {cmd = "release.sh", description = "Release the package"}
+release = {cmd = "./release.sh", description = "Release the package", cwd = "."}
 test = {cmd = "python test/test.py", description = "Run unit tests"}
 
 [dependencies]
