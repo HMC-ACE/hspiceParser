@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"name": "root",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "${workspaceFolder:root}/.pixi/envs/default/bin/python",
+		"python.analysis.exclude": [
+			"**/.pixi/**"
+		],
+		"ruff.interpreter": [
+			"${workspaceFolder:root}/.pixi/envs/default/bin/python"
+		],
+		"explorer.autoRevealExclude": {
+			".pixi": true,
+			"*": false
+		},
+		"githubPullRequests.ignoredPullRequestBranches": [
+			"main"
+		],
+	}
+}

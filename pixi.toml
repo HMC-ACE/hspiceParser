@@ -1,0 +1,37 @@
+[workspace]
+authors = ["Davoody, Amirhossein <amirhossein.davoody@gmail.com>"]
+channels = ["conda-forge"]
+name = "hspice_parser"
+platforms = ["linux-64"]
+preview = ["pixi-build"]
+version = "0.1.0"
+
+[system-requirements]
+libc = {family = "glibc", version = "2.22"}
+linux = "4.12.14"
+
+[tasks]
+release = {cmd = "release.sh", description = "Release the package"}
+test = {cmd = "python test/test.py", description = "Run unit tests"}
+
+[dependencies]
+hspice_parser = {path = "."}
+numpy = ">=2.3.4,<3"
+python = ">=3.9"
+scipy = ">=1.16.3,<2"
+
+[package]
+description = "A parser for HSPICE simulation output files."
+name = "hspice_parser"
+version = "0.1.0"
+
+[package.build]
+backend = {name = "pixi-build-python", version = "==0.4.0"}
+
+[package.host-dependencies]
+hatchling = ">=1.26.3"
+
+[package.run-dependencies]
+numpy = "*"
+python = ">=3.9"
+scipy = "*"

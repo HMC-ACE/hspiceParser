@@ -1,13 +1,39 @@
 # hspiceParser
 
-Welcome to the hspiceParser Github page. hpsiceParser aims to be the final word in parsing hSpice output files, building on a long legacy of programs built by other circuit designers. The goals are (1) very simple installation, (2) support for a wide variety of output formats and (3) thorough documentation of what the parser is doing; if you've ever Googled "hSpice output format" and been frustrated at the result, then we're hoping this project helps. 
+Welcome to the hspiceParser GitHub page. hspiceParser aims to be the final word in parsing hSpice output files, building on a long legacy of programs built by other circuit designers.
 
-In the spirit of 'very simple installation', you can download hspiceParser from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/hspiceParser.py), or run the following terminal command:
+The main goals of hspiceParser are:
 
-`wget https://raw.githubusercontent.com/HMC-ACE/hspiceParser/main/hspiceParser.py`
+1. **Very simple installation** - Easy to set up and use
+2. **Support for a wide variety of output formats** - Compatible with multiple hSpice formats
+3. **Thorough documentation** - Clear explanations of what the parser is doing
 
-In the spirit of 'wide variety of output formats', take a look at the [Usage](Usage.md).
+If you've ever Googled "hSpice output format" and been frustrated at the result, then we're hoping this project helps.
 
-In the spirit of 'thorough documentation', we have included a description of the hSpice output file formats that we support (9601,2001 and ASCII) at [hSpice Output](hSpice_output.md)
+## Installation
+### Using pixi package manager
 
-We hope you download and use this parser, and we are also eager to integrate features from the community.  Send us some pull requests!
+Run the following command in your terminal:
+
+```bash
+pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --branch main
+
+pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --tag latest
+```
+
+### Quick Download
+
+You can download hspiceParser directly from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
+
+```bash
+wget https://raw.githubusercontent.com/HMC-ACE/hspiceParser/main/src/hspice_parser/hspiceParser.py
+```
+
+## Documentation
+
+- **Usage Guide**: See [Usage.md](Usage.md) for examples and detailed usage instructions
+- **Output Formats**: See [hSpice_output.md](hSpice_output.md) for documentation on supported hSpice output file formats (9601, 2001, and ASCII)
+
+## Contributing
+
+We hope you download and use this parser, and we are also eager to integrate features from the community. Send us some pull requests!
