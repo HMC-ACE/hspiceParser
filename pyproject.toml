@@ -5,7 +5,7 @@ requires-python = ">= 3.9"
 version = "0.1.0"
 
 [project.scripts]
-# hsp-parser = "hspiceParser:main"
+hsp-parser = "hspice_parser:convert"
 
 [build-system]
 build-backend = "hatchling.build"

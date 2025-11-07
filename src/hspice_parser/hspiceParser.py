@@ -679,7 +679,7 @@ def import_export(path, ext):
         import_export_ascii(path, ext)
 
 
-def main():
+def convert():
     if sys.argv[1] == "-h" or sys.argv[1] == "--help" or sys.argv[1] == "-help":
         usage()
 
@@ -692,4 +692,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    convert()
