@@ -31,10 +31,10 @@ pip install git+https://github.com/amirhosseindavoody/hspiceParser.git@main
 
 ### Quick Download
 
-You can download hspiceParser directly from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
+You can download hspiceParser directly from [here](https://github.com/amirhosseindavoody/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
 
 ```bash
-wget https://raw.githubusercontent.com/HMC-ACE/hspiceParser/main/src/hspice_parser/hspiceParser.py
+wget https://raw.githubusercontent.com/amirhosseindavoody/hspiceParser/main/src/hspice_parser/hspiceParser.py
 ```
 
 ## Documentation
