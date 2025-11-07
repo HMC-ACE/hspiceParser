@@ -11,6 +11,7 @@ The main goals of hspiceParser are:
 If you've ever Googled "hSpice output format" and been frustrated at the result, then we're hoping this project helps.
 
 ## Installation
+
 ### Using pixi package manager
 
 Run the following command in your terminal:
@@ -19,6 +20,13 @@ Run the following command in your terminal:
 pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --branch main
 
 pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --tag latest
+```
+
+### Using pip
+You can also install hspiceParser using pip:
+
+```bash
+pip install git+https://github.com/amirhosseindavoody/hspiceParser.git@main
 ```
 
 ### Quick Download
