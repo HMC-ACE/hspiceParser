@@ -17,25 +17,29 @@ If you've ever Googled "hSpice output format" and been frustrated at the result,
 Run the following command in your terminal:
 
 ```bash
-pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --branch main
+pixi add hspice_parser --git https://github.com/HMC-ACE/hspiceParser --branch main
 
-pixi add hspice_parser --git https://github.com/amirhosseindavoody/hspiceParser --tag latest
+pixi add hspice_parser --git https://github.com/HMC-ACE/hspiceParser --tag latest
 ```
 
 ### Using pip
 You can also install hspiceParser using pip:
 
 ```bash
-pip install git+https://github.com/amirhosseindavoody/hspiceParser.git@main
+pip install git+https://github.com/HMC-ACE/hspiceParser.git@main
 ```
 
 ### Quick Download
 
-You can download hspiceParser directly from [here](https://github.com/amirhosseindavoody/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
+You can download hspiceParser directly from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
 
 ```bash
-wget https://raw.githubusercontent.com/amirhosseindavoody/hspiceParser/main/src/hspice_parser/hspiceParser.py
+wget https://raw.githubusercontent.com/HMC-ACE/hspiceParser/main/src/hspice_parser/hspiceParser.py
 ```
+
+### Requirements
+
+The instruction above enable most of hSpiceParser’s functionality, but some output formats require additional Python libraries.  The Parser file only relies on built-in Python 3.4+ functions to produce .m, .csv and Pickle files. The parser can also produce Matlab .mat files, but it requires that you have Scipy and Numpy installed on your machine to do so.
 
 ## Documentation
 

@@ -12,14 +12,6 @@ hSpice simulations report arrays of values of electrical variables that correspo
 
 If there are multiple sweeps in the input file and the CSV option is selected, the parser will create a folder of CSV files named according to the value of the swept variable. The use of both the “.m” and pickle option will result in a single file that contains all of the sweeps. The pickle option saves a python dictionary with the variable names from the hSpice file as the keys, and the corresponding values for each variable stored in a two dimensional list with the first dimension corresponding to the sweep index and the second corresponding to the values of the variable throughout the simulation. The “.m” and “.mat” is organized in the same way as the pickle output but in the appropriate object
 
-# Installation
-
-The parser is a single python file that is run from the terminal. To use it you must have Python 3.5+ which does require installation from [here](https://www.python.org/downloads/). Download the file here [raw link] or navigate to the appropriate directory on your computer and do the following:
-
-`wget https://github.com/HMC-ACE/hspiceParser/blob/main/hspiceParser.py`
-
-This download enables most of hSpiceParser’s functionality, but some output formats require additional Python libraries.  The Parser file only relies on built-in Python 3.4+ functions to produce .m, .csv and Pickle files. The parser can also produce Matlab .mat files, but it requires that you have Scipy and Numpy installed on your machine to do so.
-
 # Usage Examples
 
 To use the parser do:
