@@ -19,8 +19,11 @@ from shutil import rmtree
 import pickle
 import sys
 
-import scipy.io as sio
-import numpy as np
+try:
+    import scipy.io as sio
+    import numpy as np
+except ImportError:
+    print("WARNING: scipy and numpy not found, matlab .mat export will not be available. To use Matlab's .mat extension, you must have Scipy and Numpy installed on your machine. See https://www.scipy.org/install.html and https://numpy.org/install for details.")
 
 COUNT = 0
 
