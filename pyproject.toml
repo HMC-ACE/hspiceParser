@@ -1,0 +1,12 @@
+[project]
+dependencies = ["numpy", "scipy"]
+name = "hspice_parser"
+requires-python = ">= 3.9"
+version = "0.1.0"
+
+[project.scripts]
+hsp-parser = "hspice_parser:convert"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
