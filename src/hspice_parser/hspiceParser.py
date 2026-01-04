@@ -119,11 +119,11 @@ def parse_var_name(name):
 
 
 def parse_header(header_str):
-    header_lst = header_str.split(" ")
+    header_str_post_copyright = header_str[header_str.find("Reserved.") :]
+    header_lst = header_str_post_copyright.split(" ")
     header_lst = list(filter(lambda x: x != "", header_lst))
-    header_lst = header_lst[:2] + header_lst[15:]  # this chops out the copy right stuff
-    analysis_type = header_lst[2]
-    var_info = header_lst[3:-1]
+    analysis_type = header_lst[0]
+    var_info = header_lst[1:-1]
     first_var_units = {"1": "sec", "2": "freq", "3": "volt"}
     gnrl_var_units = {
         "1": "volt",  # 1	voltage as dependent var in sweep or transient
@@ -665,13 +665,19 @@ def measure_result_to_matlab_string(measure_result):  # this should be obsolete 
 # end  of Spencer's (lightly modified) code
 
 
-def is_binary(file_path):
-    with open(file_path) as file:
+def is_binary(file_path, chunk_size=1024):
+    with open(file_path, 'rb') as file:
         try:
-            file.readline()
-            return False  # this means that it is ascii
+            chunk = file.read(chunk_size)
         except UnicodeDecodeError:
-            return True  # this means that it is binary
+            return True
+        if not chunk:
+            return False
+        if b'\x00' in chunk:
+            return True
+        for chunk in iter(lambda: file.read(chunk_size), b''):
+            if b'\x00' in chunk:
+                return True
 
 
 def import_export(path, ext):
@@ -683,13 +689,15 @@ def import_export(path, ext):
 
 
 def convert():
-    if sys.argv[1] == "-h" or sys.argv[1] == "--help" or sys.argv[1] == "-help":
+    try:
+        if sys.argv[1] == "-h" or sys.argv[1] == "--help" or sys.argv[1] == "-help":
+            usage()
+            return
+        path = sys.argv[1]
+        extension = sys.argv[2]
+    except IndexError:
         usage()
-
         return
-
-    path = sys.argv[1]
-    extension = sys.argv[2]
 
     import_export(path, extension)
 
