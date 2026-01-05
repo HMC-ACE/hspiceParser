@@ -29,6 +29,8 @@ You can also install hspiceParser using pip:
 pip install git+https://github.com/HMC-ACE/hspiceParser.git@main
 ```
 
+After installation, you can use the `hsp-parser` command from your terminal.
+
 ### Quick Download
 
 You can download hspiceParser directly from [here](https://github.com/HMC-ACE/hspiceParser/blob/main/src/hspice_parser/hspiceParser.py), or run the following terminal command:
