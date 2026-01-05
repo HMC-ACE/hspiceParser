@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">= 3.9"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Davoody, Amirhossein", email = "amirhossein.davoody@gmail.com"}
+    {name = "Gonzalez, Raffa", email = "rcgonzalez@g.hmc.edu"}
+    {name = "Spencer, Matthew", email = "mespence@gmail.com"}
 ]
 dependencies = ["numpy", "scipy"]
 
